@@ -1,14 +1,14 @@
 # Delhi AQI Predictor — PM2.5 Forecasting for Okhla Phase-2
 
-I built this project to predict Delhi's air quality using 6 years of real government sensor data from the Central Pollution Control Board (CPCB). This is not a tutorial project with toy data — it uses actual readings from a real monitoring station in Okhla, South Delhi.
+I built this project to predict Delhi's air quality using 6 years of real government sensor data from the Central Pollution Control Board (CPCB). This is not a tutorial project with toy data, it uses actual readings from a real monitoring station in Okhla, South Delhi.
 
 ---
 
 ## Why I Built This
 
-Delhi's air quality is genuinely dangerous, especially between October and February. I wanted to build something that matters — a model that can predict tomorrow's PM2.5 levels so people can plan ahead, decide whether to wear a mask, or keep their kids indoors.
+Delhi's air quality is genuinely dangerous, especially between October and February. I wanted to build something that matters a model that can predict tomorrow's PM2.5 levels so people can plan ahead, decide whether to wear a mask, or keep their kids indoors.
 
-I started this project as a complete beginner. Everything here — the data pipeline, the cleaning, the models, the mistakes and fixes — I figured out step by step.
+I started this project as a complete beginner. Everything here the data pipeline, the cleaning, the models, the mistakes and fixes. I figured out step by step.
 
 ---
 
@@ -24,11 +24,11 @@ I built two machine learning models:
 
 ## Data Source
 
-I used the Okhla Phase-2 monitoring station in Delhi, operated by DPCC and reported by CPCB. The OpenAQ location ID for this station is 8239 — I found this directly from the URL when visiting the station page on explore.openaq.org.
+I used the Okhla Phase-2 monitoring station in Delhi, operated by DPCC and reported by CPCB. The OpenAQ location ID for this station is 8239. I found this directly from the URL when visiting the station page on explore.openaq.org.
 
 The data covers January 2020 to February 2026, giving me around 1,008 usable days after cleaning. The parameters available include PM2.5, PM10, NO2, SO2, CO, O3, NOx, temperature, humidity, and wind data.
 
-I did not use the OpenAQ API to download this data. The API has a rate limit of 60 requests per minute and 2,000 per hour. Downloading 6 years of data would have required ~17,500 API calls and around 9 hours of continuous downloading — with a risk of getting permanently banned. Instead, I used OpenAQ's public AWS S3 bucket which has no rate limits, no API key required, and downloads the same data in minutes.
+I did not use the OpenAQ API to download this data. The API has a rate limit of 60 requests per minute and 2,000 per hour. Downloading 6 years of data would have required ~17,500 API calls and around 9 hours of continuous downloading with a risk of getting permanently banned. Instead, I used OpenAQ's public AWS S3 bucket which has no rate limits, no API key required, and downloads the same data in minutes.
 
 ---
 
@@ -171,7 +171,7 @@ Results: R² = 0.9501, MAE = 12.40 µg/m³
 
 ### Model 2 — Tomorrow's PM2.5 (Time Series)
 
-I trained on 2020–2024 and tested on 2025–2026 data the model had never seen. The model correctly captured winter spikes every October–January, clean monsoon air every July–September, and day-to-day momentum in pollution levels.
+I trained on 2020–2024 and tested on 2025–2026 data the model had never seen. The model correctly captured winter spikes every October–January, clean monsoon air every July–September, and day to day momentum in pollution levels.
 
 ---
 
@@ -193,17 +193,17 @@ Random Forest won. With around 1,000 rows, its approach of building trees indepe
 
 ### Data Leakage
 
-During feature engineering I created a feature called `pm25_pm10_ratio = pm25 / pm10`. This accidentally included the target variable (PM2.5) inside the input, so the model was essentially reading the answer from the question paper. It showed a fake R² of 0.9913. After removing it, the honest score dropped to 0.9425 — worse than the original baseline.
+During feature engineering I created a feature called `pm25_pm10_ratio = pm25 / pm10`. This accidentally included the target variable (PM2.5) inside the input, so the model was essentially reading the answer from the question paper. It showed a fake R² of 0.9913. After removing it, the honest score dropped to 0.9425 worse than the original baseline.
 
 The rule I follow now: before adding any feature, I ask "would I have this value at prediction time without already knowing the answer?" If no, it is leakage and it gets removed.
 
 ### Chronological Splitting for Time Series
 
-For the tomorrow's prediction model, a random split cannot be used. If 2026 data ends up in the training set and 2022 data ends up in the test set, the model is learning from the future. I used a hard date cutoff — everything before 2025 trains the model, everything from 2025 onwards tests it.
+For the tomorrow's prediction model, a random split cannot be used. If 2026 data ends up in the training set and 2022 data ends up in the test set, the model is learning from the future. I used a hard date cutoff everything before 2025 trains the model, everything from 2025 onwards tests it.
 
 ### Missing Data from Sensor Downtime
 
-Several columns (NOx, wind speed, wind direction, humidity, temperature) were 60–87% empty. This is normal with real CPCB data — sensors go offline for maintenance, power cuts, and calibration. I dropped these columns rather than filling them, because imputing 87% of a column introduces more noise than signal.
+Several columns (NOx, wind speed, wind direction, humidity, temperature) were 60–87% empty. This is normal with real CPCB data sensors go offline for maintenance, power cuts, and calibration. I dropped these columns rather than filling them, because imputing 87% of a column introduces more noise than signal.
 
 ---
 
