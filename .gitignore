@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# Python compilation files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Data Files (Raw, Cleaned, etc.)
+raw_data/
+*.csv
+*.csv.gz
+*.tsv
+*.xlsx
+*.db
+*.sqlite3
+
+# Saved Machine Learning Models (Optional to ignore if large, uncomment if you want to push models)
+# *.pkl
+# *.joblib
+# *.h5
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System and Temp Files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.bak
+*.tmp

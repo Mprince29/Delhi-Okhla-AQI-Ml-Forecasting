@@ -1,0 +1,34 @@
+# ============================================================
+#  Delhi AQI Prediction — Requirements
+#  Project: PM2.5 Forecasting for Okhla Phase-2, Delhi
+#  Data Source: CPCB via OpenAQ AWS S3 (locationid=8239)
+# ============================================================
+
+# ── DATA DOWNLOAD ────────────────────────────────────────────
+awscli>=2.15.0              # Download historical data from OpenAQ's AWS S3 bucket
+openaq>=0.7.0               # OpenAQ API client (optional, alternative to AWS CLI)
+
+# ── CORE DATA SCIENCE ────────────────────────────────────────
+numpy>=1.26.0               # Numerical operations and array handling
+pandas>=2.1.0               # Data manipulation, CSV reading, DataFrame operations
+
+# ── MACHINE LEARNING ─────────────────────────────────────────
+scikit-learn>=1.4.0         # Random Forest, train/test split, metrics, GridSearchCV
+xgboost>=2.0.0              # XGBoost algorithm (tested as alternative to Random Forest)
+
+# ── VISUALISATION ────────────────────────────────────────────
+matplotlib>=3.8.0           # Line plots, bar charts, scatter plots
+seaborn>=0.13.0             # Heatmaps, distribution plots, styled charts
+
+# ── MODEL PERSISTENCE ────────────────────────────────────────
+joblib>=1.3.0               # Save and load trained ML models (.pkl files)
+
+# ── NOTEBOOK ENVIRONMENT ─────────────────────────────────────
+jupyter>=1.0.0              # Jupyter Notebook — run .ipynb files
+notebook>=7.0.0             # Jupyter Notebook server
+ipykernel>=6.0.0            # Jupyter kernel to run notebook in virtual environment
+
+# ── UTILITIES ────────────────────────────────────────────────
+python-dateutil>=2.8.2      # Date parsing and manipulation
+pytz>=2024.1                # Timezone conversion (UTC → IST)
+
